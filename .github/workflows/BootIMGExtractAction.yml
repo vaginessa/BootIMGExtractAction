@@ -24,7 +24,7 @@ jobs:
           BUILD_TIME=$(TZ=Asia/Shanghai date +"%m%d%H%M")
           echo "BUILD_TIME=$BUILD_TIME" >>$GITHUB_ENV
 
-      - name: 提取镜像并上传至 TMP
+      - name: 提取镜像
         run: |
           cd ~
           git clone --recurse-submodules https://github.com/tosasitill/Firmware_extractor.git
