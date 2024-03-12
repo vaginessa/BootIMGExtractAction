@@ -32,13 +32,19 @@ jobs:
           cd Firmware_extractor
           aria2c -s 10 -x 10 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
           ./extractor.sh firmware.zip
+          if [ -f "init_boot.img" ]; then
+            mkdir -p out
+            mv init_boot.img out/
+            echo "init_boot.img has been moved to the out folder."
+          else
+            echo "init_boot.img not found."
+          fi
           tree
           cd ${{ github.workspace }}
           touch info.md
           echo "提交日期：$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')" >> info.md
           echo "ROM 下载直链：${{ github.event.inputs.rom_url }}" >> info.md
           cd ~/Firmware_extractor/out
-          if [ -f "init_boot.img" ]; then rm boot.img; fi
           du -h --total *.img | sed 's/^/提取镜像大小： /' | head -n 1 >> ${{ github.workspace }}/info.md
 
       - name: 上传镜像至 Artifacts
