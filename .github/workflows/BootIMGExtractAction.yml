@@ -41,14 +41,14 @@ jobs:
           cd ~/Firmware_extractor/out
 
       - name: Find and upload IMG artifacts
-          run: |
-    for img_file in *.img; do
-      if [ -f "$img_file" ]; then
-        echo "Uploading $img_file..."
-        name=$(basename "$img_file")
-        actions/upload-artifact@v3
-        with:
-          name: "$name"
-          path: "$img_file"
-      fi
-    done
+        run: |
+         for img_file in *.img; do
+          if [ -f "$img_file" ]; then
+          echo "Uploading $img_file..."
+          name=$(basename "$img_file")
+          actions/upload-artifact@v3
+          with:
+           name: "$name"
+           path: "$img_file"
+          fi
+         done
