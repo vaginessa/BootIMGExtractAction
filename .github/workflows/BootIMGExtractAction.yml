@@ -22,8 +22,6 @@ jobs:
           sudo apt-get -y install python3-pip aria2 liblzma-dev brotli lz4
           pip3 install backports.lzma pycrypto
           pip install protobuf==3.20
-          BUILD_TIME=$(TZ=Asia/Shanghai date +"%m%d%H%M")
-          echo "BUILD_TIME=$BUILD_TIME" >>$GITHUB_ENV
 
       - name: 提取镜像
         run: |
@@ -40,12 +38,7 @@ jobs:
             echo "init_boot.img not found."
           fi
           tree
-          cd ${{ github.workspace }}
-          touch info.md
-          echo "提交日期：$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')" >> info.md
-          echo "ROM 下载直链：${{ github.event.inputs.rom_url }}" >> info.md
           cd ~/Firmware_extractor/out
-          du -h --total *.img | sed 's/^/提取镜像大小： /' | head -n 1 >> ${{ github.workspace }}/info.md
 
       - name: 上传镜像至 Artifacts
         uses: actions/upload-artifact@v3
