@@ -38,22 +38,6 @@ jobs:
             echo "init_boot.img not found."
           fi
           tree
-      - name: 检测并上传 .img 文件作为 artifacts
-        run: |
-          # 切换到 out 目录
-          cd ~/Firmware_extractor/out
-          # 查找所有的 .img 文件
-          for img_file in *.img; do
-            # 检查文件是否存在
-            if [ -f "$img_file" ]; then
-              # 上传文件到 artifacts
-              echo "Uploading $img_file to artifacts..."
-              # 设置输出变量，以便在下一个步骤中使用
-              echo "img_file=$img_file" >>$GITHUB_ENV
-            else
-              echo "File not found: $img_file"
-            fi
-          done
       - name: Upload .img file as artifact
         uses: actions/upload-artifact@v3
         with:
