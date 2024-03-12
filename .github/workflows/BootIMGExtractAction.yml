@@ -39,16 +39,21 @@ jobs:
           fi
           tree
           cd ~/Firmware_extractor/out
-
-      - name: Find and upload IMG artifacts
+      - name: List .img files
+         run:|
+          find /home/runner/Firmware_extractor/out -type f -name "*.img" -execdir echo {} \;
+      - name: Upload .img files as artifacts
         run: |
-         for img_file in *.img; do
-          if [ -f "$img_file" ]; then
-          echo "Uploading $img_file..."
-          name=$(basename "$img_file")
-          actions/upload-artifact@v3
-          with:
-           name: "$name"
-           path: "$img_file"
-          fi
-         done
+         find /home/runner/Firmware_extractor/out -type f -name "*.img" | while read img_file; do
+          echo "Uploading $img_file to artifacts..."
+          artifact_name=$(basename "$img_file")
+          echo "artifact_name=$artifact_name" >>$GITHUB_ENV
+          echo "artifact_path=$img_file" >>$GITHUB_ENV
+          echo "::set-output name=artifact_name::$artifact_name"
+          echo "::set-output name=artifact_path::$img_file"
+        done
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ env.artifact_name }}
+        path: ${{ env.artifact_path }}
