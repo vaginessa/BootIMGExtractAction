@@ -18,6 +18,7 @@ jobs:
       - name: 安装依赖
         run: |
           sudo apt-get update
+          sudo apt-get install tree
           sudo apt-get -y install python3-pip aria2 liblzma-dev brotli lz4
           pip3 install backports.lzma pycrypto
           pip install protobuf==3.20
@@ -31,6 +32,7 @@ jobs:
           cd Firmware_extractor
           aria2c -s 10 -x 10 -d . -o firmware.zip "${{ github.event.inputs.rom_url }}"
           ./extractor.sh firmware.zip
+          tree
           cd ${{ github.workspace }}
           touch info.md
           echo "提交日期：$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')" >> info.md
