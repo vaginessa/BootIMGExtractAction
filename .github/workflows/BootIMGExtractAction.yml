@@ -43,3 +43,24 @@ jobs:
         with:
           name: boot.img  # 这里设置 artifact 的名称
           path: ~/Firmware_extractor/out/boot.img  # 这里设置要上传的文件的路径
+      - name: Check and upload init_boot.img as artifact
+        run: |
+          # 切换到 out 目录
+          cd ~/Firmware_extractor/out
+          # 检查 init_boot.img 文件是否存在
+          if [ -f "init_boot.img" ]; then
+            # 文件存在，上传 artifact
+            echo "init_boot.img found. Uploading..."
+            # 设置输出变量，以便在下一个步骤中使用
+            echo "img_file=init_boot.img" >> $GITHUB_ENV
+          else
+            # 文件不存在，打印消息
+            echo "init_boot.img not found. Skipping upload."
+          fi
+
+      - name: Upload init_boot.img as artifact
+        if: env.img_file == 'init_boot.img'  # 只有在上一步中找到文件时才执行这个步骤
+        uses: actions/upload-artifact@v3
+        with:
+          name: init_boot.img
+          path: ~/Firmware_extractor/out/init_boot.img
