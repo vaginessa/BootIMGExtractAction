@@ -38,22 +38,25 @@ jobs:
             echo "init_boot.img not found."
           fi
           tree
-          cd ~/Firmware_extractor/out
-      - name: List .img files
-         run:|
-          find /home/runner/Firmware_extractor/out -type f -name "*.img" -execdir echo {} \;
-      - name: Upload .img files as artifacts
+      - name: 检测并上传 .img 文件作为 artifacts
         run: |
-         find /home/runner/Firmware_extractor/out -type f -name "*.img" | while read img_file; do
-          echo "Uploading $img_file to artifacts..."
-          artifact_name=$(basename "$img_file")
-          echo "artifact_name=$artifact_name" >>$GITHUB_ENV
-          echo "artifact_path=$img_file" >>$GITHUB_ENV
-          echo "::set-output name=artifact_name::$artifact_name"
-          echo "::set-output name=artifact_path::$img_file"
-        done
-    - name: Upload artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: ${{ env.artifact_name }}
-        path: ${{ env.artifact_path }}
+          # 切换到 out 目录
+          cd ~/Firmware_extractor/out
+          # 查找所有的 .img 文件
+          for img_file in *.img; do
+            # 检查文件是否存在
+            if [ -f "$img_file" ]; then
+              # 上传文件到 artifacts
+              echo "Uploading $img_file to artifacts..."
+              # 设置输出变量，以便在下一个步骤中使用
+              echo "img_file=$img_file" >>$GITHUB_ENV
+            else
+              echo "File not found: $img_file"
+            fi
+          done
+
+      - name: Upload .img file as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.img_file }}
+          path: ~/Firmware_extractor/out/${{ env.img_file }}
