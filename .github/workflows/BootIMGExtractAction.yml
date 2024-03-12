@@ -40,8 +40,15 @@ jobs:
           tree
           cd ~/Firmware_extractor/out
 
-      - name: 上传镜像至 Artifacts
-        uses: actions/upload-artifact@v3
+      - name: Find and upload IMG artifacts
+          run: |
+    for img_file in *.img; do
+      if [ -f "$img_file" ]; then
+        echo "Uploading $img_file..."
+        name=$(basename "$img_file")
+        actions/upload-artifact@v3
         with:
-          name: firmware-images
-          path: "~/Firmware_extractor/out/*"
+          name: "$name"
+          path: "$img_file"
+      fi
+    done
