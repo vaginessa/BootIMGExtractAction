@@ -54,9 +54,8 @@ jobs:
               echo "File not found: $img_file"
             fi
           done
-
       - name: Upload .img file as artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ env.img_file }}
-          path: ~/Firmware_extractor/out/${{ env.img_file }}
+          name: boot.img  # 这里设置 artifact 的名称
+          path: ~/Firmware_extractor/out/boot.img  # 这里设置要上传的文件的路径
