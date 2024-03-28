@@ -7,7 +7,7 @@ on:
       rom_url:
         description: 'ROM 下载直链'
         required: true
-        default: 'https://bigota.d.miui.com/V14.0.8.0.TKHCNXM/miui_ALIOTH_V14.0.8.0.TKHCNXM_50141f32f2_13.0.zip'
+        default: 'https://bkt-sgp-miui-ota-update-alisgp.oss-ap-southeast-1.aliyuncs.com/V14.0.8.0.TKHCNXM/miui_ALIOTH_V14.0.8.0.TKHCNXM_50141f32f2_13.0.zip'
 
 jobs:
   YIJIANTIQU:
