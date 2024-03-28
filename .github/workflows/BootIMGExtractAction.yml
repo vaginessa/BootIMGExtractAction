@@ -1,6 +1,7 @@
 name: 提取 boot / init_boot.img
 
 on:
+  push:
   workflow_dispatch:
     inputs:
       rom_url:
